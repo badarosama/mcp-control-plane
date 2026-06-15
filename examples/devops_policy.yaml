@@ -1,0 +1,42 @@
+# DevOps MCP server policy
+# Tiered access: monitor freely, act with caution, destroy never (unless admin)
+
+default_role: monitor
+deny_by_default: true
+
+roles:
+  monitor:
+    can_see:
+      - get_server_status
+      - get_metrics
+      - list_deployments
+      - get_logs
+    can_call:
+      - get_server_status
+      - get_metrics
+      - list_deployments
+      - get_logs
+
+  deployer:
+    can_see:
+      - get_server_status
+      - get_metrics
+      - list_deployments
+      - get_logs
+      - restart_service
+      - scale_cluster
+      - rollback_deployment
+    can_call:
+      - get_server_status
+      - get_metrics
+      - list_deployments
+      - get_logs
+      - restart_service
+      - rollback_deployment
+      # can SEE scale_cluster but can't call it without approval
+
+  admin:
+    can_see:
+      - "*"
+    can_call:
+      - "*"

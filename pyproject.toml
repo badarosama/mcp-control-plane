@@ -1,0 +1,55 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "mcp-control-plane"
+version = "0.1.0"
+description = "Agent runtime safety engine for MCP servers. Tool budgets, argument validation, dry-run enforcement, execution tracing, and role-based access control."
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.10"
+authors = [
+    { name = "Osama Badar", email = "badarosama@users.noreply.github.com" },
+]
+keywords = ["mcp", "model-context-protocol", "agent-safety", "runtime-policy", "tool-validation", "dry-run", "audit", "ai-safety"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Security",
+    "Topic :: Software Development :: Libraries",
+]
+dependencies = [
+    "mcp>=1.0.0",
+    "pyyaml>=6.0",
+]
+
+[project.optional-dependencies]
+otel = ["opentelemetry-api>=1.20.0", "opentelemetry-sdk>=1.20.0"]
+jwt = ["pyjwt>=2.8.0"]
+dev = ["pytest>=8.0", "pytest-asyncio>=0.23", "ruff>=0.4.0", "pyright>=1.1"]
+
+[project.urls]
+Homepage = "https://github.com/badarosama/mcp-control-plane"
+Repository = "https://github.com/badarosama/mcp-control-plane"
+Issues = "https://github.com/badarosama/mcp-control-plane/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/mcp_guard"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W"]
+
+[tool.pyright]
+pythonVersion = "3.10"
+typeCheckingMode = "basic"

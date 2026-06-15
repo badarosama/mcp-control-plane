@@ -1,0 +1,52 @@
+# mcp-control-plane: Full safety policy example
+# Demonstrates all features: RBAC, budgets, argument validation, dry-run
+
+default_role: viewer
+deny_by_default: true
+
+# Global budget limits — prevent agent loops
+budgets:
+  max_calls_per_session: 100
+  max_calls_per_tool: 20
+
+# Role-based access control
+roles:
+  viewer:
+    can_see: [read_incident, search_kb, get_dashboard]
+    can_call: [read_incident, search_kb]
+
+  operator:
+    can_see: [read_incident, search_kb, get_dashboard, close_incident, refund_customer]
+    can_call: [read_incident, search_kb, close_incident, refund_customer]
+
+  admin:
+    can_see: ["*"]
+    can_call: ["*"]
+
+# Per-tool safety rules
+tools:
+  refund_customer:
+    rules:
+      amount:
+        max: 500
+        min: 0.01
+      reason:
+        min_length: 10
+    max_calls: 5               # stricter per-tool limit
+
+  delete_user:
+    rules:
+      confirm:
+        equals: true
+    require_dry_run: true       # must preview before executing
+
+  drop_database:
+    require_dry_run: true
+    max_calls: 1                # once is enough
+
+  restart_service:
+    rules:
+      service_name:
+        pattern: "^[a-z][a-z0-9-]+$"
+        max_length: 63
+    require_dry_run: true

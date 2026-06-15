@@ -1,0 +1,34 @@
+# mcp-guard example policy
+# Defines role-based access control for MCP tools
+
+default_role: viewer
+deny_by_default: true
+
+roles:
+  viewer:
+    can_see:
+      - read_incident
+      - search_kb
+      - get_dashboard
+    can_call:
+      - read_incident
+      - search_kb
+
+  operator:
+    can_see:
+      - read_incident
+      - search_kb
+      - get_dashboard
+      - close_incident
+      - reassign_incident
+    can_call:
+      - read_incident
+      - search_kb
+      - close_incident
+      # can SEE reassign_incident but can't CALL it (preview-only)
+
+  admin:
+    can_see:
+      - "*"          # can see all tools
+    can_call:
+      - "*"          # can call all tools
